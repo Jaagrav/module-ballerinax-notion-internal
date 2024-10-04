@@ -24,7 +24,7 @@ plugins {
 
 description = 'Notion - Ballerina'
 
-def packageName = "notion"
+def packageName = "notion_rest"
 def packageOrg = "ballerinax"
 def tomlVersion = stripBallerinaExtensionVersion("${project.version}")
 def ballerinaTomlFilePlaceHolder = new File("${project.rootDir}/build-config/resources/Ballerina.toml")

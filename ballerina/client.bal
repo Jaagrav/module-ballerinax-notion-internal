@@ -19,9 +19,14 @@
 
 import ballerina/http;
 
+# This is a generated connector for [Notion API v1](https://developers.notion.com/reference/intro) OpenAPI Specification. 
+# Notion API provides capability to access all-in-one workspace where you can write, plan, collaborate and get organized. it has components such as notes, databases, kanban boards, wikis, calendars, and reminders. You can connect these  components to take notes, add tasks, manage projects & more. Notion provides the building blocks and you can  create your own layouts and toolkit to get work done. This ballerina connector allows you to connect Notion through its [REST API](https://developers.notion.com/docs).
+@display {label: "Notion", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials. 
+    # Create a [Notion account](https://www.notion.so/)  and obtain tokens following [this guide](https://developers.notion.com/docs/authorization).
     #
     # + config - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
@@ -54,45 +59,26 @@ public isolated client class Client {
         return;
     }
 
-    # Delete a block
-    #
-    # + headers - Headers to be sent with the request 
-    # + return - OK 
-    resource isolated function delete v1/blocks/[string id](DeleteV1BlocksIdHeaders headers = {}) returns record {}|error {
-        string resourcePath = string `/v1/blocks/${getEncodedUri(id)}`;
-        map<string|string[]> httpHeaders = getMapForHeaders(headers);
-        return self.clientEp->delete(resourcePath, headers = httpHeaders);
-    }
-
-    # Retrieve a block
-    #
-    # + headers - Headers to be sent with the request 
-    # + return - OK 
-    resource isolated function get v1/blocks/[string id](GetV1BlocksIdHeaders headers = {}) returns record {}|error {
-        string resourcePath = string `/v1/blocks/${getEncodedUri(id)}`;
-        map<string|string[]> httpHeaders = getMapForHeaders(headers);
-        return self.clientEp->get(resourcePath, httpHeaders);
-    }
-
     # Retrieve block children
     #
+    # + id - block children ID
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - OK 
-    resource isolated function get v1/blocks/[string id]/children(GetV1BlocksIdChildrenHeaders headers = {}, *GetV1BlocksIdChildrenQueries queries) returns record {}|error {
+    # + return - 200 Success - Retrieve block children 
+    resource isolated function get v1/blocks/[string id]/children(RetrieveBlockChildrenHeaders headers = {}, *RetrieveBlockChildrenQueries queries) returns BlockChildrenResponse|error {
         string resourcePath = string `/v1/blocks/${getEncodedUri(id)}/children`;
         resourcePath = resourcePath + check getPathForQueryParam(queries);
         map<string|string[]> httpHeaders = getMapForHeaders(headers);
         return self.clientEp->get(resourcePath, httpHeaders);
     }
 
-    # Retrieve comments
+    # List all databases
     #
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
-    # + return - OK 
-    resource isolated function get v1/comments(GetV1CommentsHeaders headers = {}, *GetV1CommentsQueries queries) returns record {}|error {
-        string resourcePath = string `/v1/comments`;
+    # + return - 200 Success - List all databases 
+    resource isolated function get v1/databases(ListAllDatabasesHeaders headers = {}, *ListAllDatabasesQueries queries) returns DatabaseResponse|error {
+        string resourcePath = string `/v1/databases`;
         resourcePath = resourcePath + check getPathForQueryParam(queries);
         map<string|string[]> httpHeaders = getMapForHeaders(headers);
         return self.clientEp->get(resourcePath, httpHeaders);
@@ -100,30 +86,22 @@ public isolated client class Client {
 
     # Retrieve a database
     #
+    # + id - Database ID
     # + headers - Headers to be sent with the request 
-    # + return - OK 
-    resource isolated function get v1/databases/[string id](GetV1DatabasesIdHeaders headers = {}) returns record {}|error {
+    # + return - 200 Success - Retrieve a database 
+    resource isolated function get v1/databases/[string id](RetrieveDatabaseHeaders headers = {}) returns Database|error {
         string resourcePath = string `/v1/databases/${getEncodedUri(id)}`;
         map<string|string[]> httpHeaders = getMapForHeaders(headers);
         return self.clientEp->get(resourcePath, httpHeaders);
     }
 
-    # Retrieve a page
+    # Retrieve a Page
     #
+    # + id - Page ID
     # + headers - Headers to be sent with the request 
-    # + return - OK 
-    resource isolated function get v1/pages/[string id](GetV1PagesIdHeaders headers = {}) returns record {}|error {
+    # + return - 200 Success - Retrieve a Page 
+    resource isolated function get v1/pages/[string id](RetrievePageHeaders headers = {}) returns PageResponse|error {
         string resourcePath = string `/v1/pages/${getEncodedUri(id)}`;
-        map<string|string[]> httpHeaders = getMapForHeaders(headers);
-        return self.clientEp->get(resourcePath, httpHeaders);
-    }
-
-    # Retrieve a page property item
-    #
-    # + headers - Headers to be sent with the request 
-    # + return - OK 
-    resource isolated function get v1/pages/[string page_id]/properties/[string property_id](GetV1PagesPage_idPropertiesProperty_idHeaders headers = {}) returns record {}|error {
-        string resourcePath = string `/v1/pages/${getEncodedUri(page_id)}/properties/${getEncodedUri(property_id)}`;
         map<string|string[]> httpHeaders = getMapForHeaders(headers);
         return self.clientEp->get(resourcePath, httpHeaders);
     }
@@ -131,63 +109,33 @@ public isolated client class Client {
     # List all users
     #
     # + headers - Headers to be sent with the request 
-    # + return - OK 
-    resource isolated function get v1/users(GetV1UsersHeaders headers = {}) returns record {}|error {
+    # + queries - Queries to be sent with the request 
+    # + return - 200 Success - List all users 
+    resource isolated function get v1/users(ListAllUsersHeaders headers = {}, *ListAllUsersQueries queries) returns PaginatedUsers|error {
         string resourcePath = string `/v1/users`;
+        resourcePath = resourcePath + check getPathForQueryParam(queries);
         map<string|string[]> httpHeaders = getMapForHeaders(headers);
         return self.clientEp->get(resourcePath, httpHeaders);
     }
 
     # Retrieve a user
     #
+    # + id - User ID
     # + headers - Headers to be sent with the request 
-    # + return - OK 
-    resource isolated function get v1/users/[string id](GetV1UsersIdHeaders headers = {}) returns record {}|error {
+    # + return - 200 Success - Retrieve a user 
+    resource isolated function get v1/users/[string id](RetrieveUserHeaders headers = {}) returns User|error {
         string resourcePath = string `/v1/users/${getEncodedUri(id)}`;
         map<string|string[]> httpHeaders = getMapForHeaders(headers);
         return self.clientEp->get(resourcePath, httpHeaders);
     }
 
-    # Retrieve your token’s bot user
-    #
-    # + headers - Headers to be sent with the request 
-    # + return - OK 
-    resource isolated function get v1/users/me(GetV1UsersMeHeaders headers = {}) returns record {}|error {
-        string resourcePath = string `/v1/users/me`;
-        map<string|string[]> httpHeaders = getMapForHeaders(headers);
-        return self.clientEp->get(resourcePath, httpHeaders);
-    }
-
-    # Update a block
-    #
-    # + headers - Headers to be sent with the request 
-    # + return - OK 
-    resource isolated function patch v1/blocks/[string id](record {} payload, PatchV1BlocksIdHeaders headers = {}) returns record {}|error {
-        string resourcePath = string `/v1/blocks/${getEncodedUri(id)}`;
-        map<string|string[]> httpHeaders = getMapForHeaders(headers);
-        http:Request request = new;
-        json jsonBody = payload.toJson();
-        request.setPayload(jsonBody, "application/json");
-        return self.clientEp->patch(resourcePath, request, httpHeaders);
-    }
-
     # Append block children
     #
+    # + id - block children ID
     # + headers - Headers to be sent with the request 
-    # + return - OK 
-    resource isolated function patch v1/blocks/[string id]/children(http:Request request, PatchV1BlocksIdChildrenHeaders headers = {}) returns record {}|error {
+    # + return - 200 Success - Append block children 
+    resource isolated function patch v1/blocks/[string id]/children(PageUpdateRequestBody payload, AppendBlockChildrenHeaders headers = {}) returns ChildBlockContent|error {
         string resourcePath = string `/v1/blocks/${getEncodedUri(id)}/children`;
-        map<string|string[]> httpHeaders = getMapForHeaders(headers);
-        // TODO: Update the request as needed;
-        return self.clientEp->patch(resourcePath, request, httpHeaders);
-    }
-
-    # Update database properties
-    #
-    # + headers - Headers to be sent with the request 
-    # + return - OK 
-    resource isolated function patch v1/databases/[string id](record {} payload, PatchV1DatabasesIdHeaders headers = {}) returns record {}|error {
-        string resourcePath = string `/v1/databases/${getEncodedUri(id)}`;
         map<string|string[]> httpHeaders = getMapForHeaders(headers);
         http:Request request = new;
         json jsonBody = payload.toJson();
@@ -195,11 +143,12 @@ public isolated client class Client {
         return self.clientEp->patch(resourcePath, request, httpHeaders);
     }
 
-    # Archive a page
+    # Update Page properties 
     #
+    # + id - Page ID
     # + headers - Headers to be sent with the request 
-    # + return - OK 
-    resource isolated function patch v1/pages/[string id](record {} payload, PatchV1PagesIdHeaders headers = {}) returns record {}|error {
+    # + return - 200 Success - Update Page properties 
+    resource isolated function patch v1/pages/[string id](PageContent payload, UpdatePagePropertiesHeaders headers = {}) returns PageUpdatedProperties|error {
         string resourcePath = string `/v1/pages/${getEncodedUri(id)}`;
         map<string|string[]> httpHeaders = getMapForHeaders(headers);
         http:Request request = new;
@@ -208,50 +157,56 @@ public isolated client class Client {
         return self.clientEp->patch(resourcePath, request, httpHeaders);
     }
 
-    # Add comment to discussion
+    # Create a database
     #
     # + headers - Headers to be sent with the request 
-    # + return - OK 
-    resource isolated function post v1/comments(http:Request request, PostV1CommentsHeaders headers = {}) returns record {}|error {
-        string resourcePath = string `/v1/comments`;
+    # + payload - Page information 
+    # + return - 200 Success - Create a database 
+    resource isolated function post v1/databases(DatabaseBodyParams payload, CreateDatabaseHeaders headers = {}) returns DatabaseResponse_results|error {
+        string resourcePath = string `/v1/databases`;
         map<string|string[]> httpHeaders = getMapForHeaders(headers);
-        // TODO: Update the request as needed;
+        http:Request request = new;
+        json jsonBody = payload.toJson();
+        request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, httpHeaders);
     }
 
-    resource isolated function post v1/databases(http:Request request, PostV1DatabasesHeaders headers = {}) returns record {}|error {
-        string resourcePath = string `/v1/databases/`;
-        map<string|string[]> httpHeaders = getMapForHeaders(headers);
-        // TODO: Update the request as needed;
-        return self.clientEp->post(resourcePath, request, httpHeaders);
-    }
-
-    # Filter a database
+    # Query a Database
     #
+    # + id - Database ID
     # + headers - Headers to be sent with the request 
-    # + return - OK 
-    resource isolated function post v1/databases/[string id]/query(http:Request request, PostV1DatabasesIdQueryHeaders headers = {}) returns record {}|error {
+    # + return - 200 Success - Query a Database (Single Filter) 
+    resource isolated function post v1/databases/[string id]/query(DatabaseContent payload, QueryDatabaseHeaders headers = {}) returns DatabaseResponse|error {
         string resourcePath = string `/v1/databases/${getEncodedUri(id)}/query`;
         map<string|string[]> httpHeaders = getMapForHeaders(headers);
-        // TODO: Update the request as needed;
+        http:Request request = new;
+        json jsonBody = payload.toJson();
+        request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, httpHeaders);
     }
 
-    resource isolated function post v1/pages(http:Request request, PostV1PagesHeaders headers = {}) returns record {}|error {
-        string resourcePath = string `/v1/pages/`;
-        map<string|string[]> httpHeaders = getMapForHeaders(headers);
-        // TODO: Update the request as needed;
-        return self.clientEp->post(resourcePath, request, httpHeaders);
-    }
-
-    # Search
+    # Create a page
     #
     # + headers - Headers to be sent with the request 
-    # + return - OK 
-    resource isolated function post v1/search(http:Request request, PostV1SearchHeaders headers = {}) returns record {}|error {
+    # + payload - Page information 
+    # + return - 200 Success - Create Page 
+    resource isolated function post v1/pages(PageBodyParams payload, CreatePageHeaders headers = {}) returns PageResponse|error {
+        string resourcePath = string `/v1/pages`;
+        map<string|string[]> httpHeaders = getMapForHeaders(headers);
+        http:Request request = new;
+        json jsonBody = payload.toJson();
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, httpHeaders);
+    }
+
+    # Searches all pages and child pages
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - 200 Success - List all user 
+    resource isolated function post v1/search(SearchPagesHeaders headers = {}) returns record {}|error {
         string resourcePath = string `/v1/search`;
         map<string|string[]> httpHeaders = getMapForHeaders(headers);
-        // TODO: Update the request as needed;
+        http:Request request = new;
         return self.clientEp->post(resourcePath, request, httpHeaders);
     }
 }

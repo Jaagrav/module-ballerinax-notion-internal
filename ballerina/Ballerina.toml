@@ -1,7 +1,7 @@
 [package]
 distribution = "2024R1"
 org = "ballerinax"
-name = "notion"
+name = "notion_rest"
 version = "1.0.0"
 license = ["Apache-2.0"]
 authors = ["Ballerina"]
